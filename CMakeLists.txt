@@ -7,6 +7,8 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 add_executable(rusm src/main.c
 	src/translator.c
 	src/translator.h
+	src/cross.c
+	src/cross.h
 )
 
 target_compile_options(rusm PRIVATE
