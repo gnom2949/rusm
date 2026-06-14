@@ -1,6 +1,10 @@
 #include "translator.h"
 #include "cross.h"
 
+#if defined(RUSM_PLAT_WINDOWS)
+#include <windows.h>
+#endif
+
 void help(void)
 {
   printf("\033[35mRusm\033[0m the russian assembly\n");
@@ -8,13 +12,17 @@ void help(void)
   printf("\t-o/--output\tSpecify output file\n");
   printf("\t-f/--format\tSpecify output assembly format\n");
   printf("\t-v/--version\tView version of rusm\n");
+  printf("\t-sF/--supported-formats\tView rusm's supported formats\n");
+  printf("\t-tA/--type-of-app\tSet application type(Windows specific flag, ignored in unix)\n");
   printf("\t-i/--info\tLearn info about rusm\n");
+  printf("\t-l/--link\tLink additional libraries(separated by spaces for Win, or individual flags)\n");
   printf("\t-h/--help\tShow this help\n\n");
 }
 
 void info(void)
 {
   printf("The \033[35mrusm\033[0m, an Russian Assembly\n");
+  printf("Platform: Windows x86_64, build 1306262125\n");
   printf("Licensed under MIT License\n");
   printf("Copyright(c)2026-present Alexander Silaev\n");
 }
@@ -38,6 +46,8 @@ int main(int argc, char **argv)
   const char *_valid_formats[] = {"elf32", "elf64", "win32", "win64", "macho64", "bin"};
   int is_valid = 0;
   char tempfile[256];
+  char *typeofapp = "console";
+  char *libs = "";
 
   if (argc < 2)
   {
@@ -49,10 +59,12 @@ int main(int argc, char **argv)
   {
     if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) { help(); return 0; }
     else if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--info") == 0) { info(); return 0; }
-    else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0) { printf("\033[35mRusm\033[0m v0.1.1\n"); return 0; }
+    else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0) { printf("\033[35mRusm\033[0m v0.1.2\n"); return 0; }
     else if (strcmp(argv[i], "-sF") == 0 || strcmp(argv[i], "--supported-formats") == 0) { supported_formats(); return 0; }
     else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) { if (i + 1 < argc) output_file = argv[++i]; }
+    else if (strcmp(argv[i], "-tA") == 0 || strcmp(argv[i], "--type-of-app") == 0) { if (i + 1 < argc) typeofapp = argv[++i]; }
     else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--format") == 0) { if (i + 1 < argc) format = argv[++i]; }
+    else if (strcmp(argv[i], "-l") == 0 || strcmp(argv[i], "--link") == 0) { if (i + 1 < argc) libs = argv[++i]; }
     else
     {
       if (argv[i][0] != '-') input_file = argv[i];
@@ -61,7 +73,7 @@ int main(int argc, char **argv)
 
   if (!input_file)
   {
-    fprintf(stderr, "Rusm \033[31m[Error\033[0m: input file not specified\n");
+    fprintf(stderr, "Rusm \033[31m[Error]\033[0m: input file not specified\n");
     return 1;
   }
 
@@ -73,7 +85,7 @@ int main(int argc, char **argv)
 #elif defined(__APPLE__)
     format = "macho64";
 #else
-    format = "binary";
+    format = "bin";
 #endif
   }
 
@@ -102,62 +114,62 @@ int main(int argc, char **argv)
   fclose(in);
   fclose(temp);
 
-  int is_nasm_available = 0;
-  char check_cmd[256];
+  char nasm_bin[MAX_PATH];
+  char linker_bin[MAX_PATH];
+
 #if defined(RUSM_PLAT_WINDOWS)
-  snprintf(check_cmd, sizeof(check_cmd), "where \"%s\" >nul 2>nul", pathtonasm);
-  if (system(check_cmd) != 0) {
-      if (system("where nasm >nul 2>nul") == 0) { pathtonasm = "nasm"; is_nasm_available = 1; }
-  } else { is_nasm_available = 1; }
+  char exe_path[MAX_PATH];
+  GetModuleFileNameA(NULL, exe_path, MAX_PATH);
+  
+  char *last_slash = strrchr(exe_path, '\\');
+  if (last_slash) *last_slash = '\0';
+  
+  snprintf(nasm_bin, sizeof(nasm_bin), "%s\\nasm.exe", exe_path);
+  snprintf(linker_bin, sizeof(linker_bin), "%s\\lld-link.exe", exe_path);
 #else
-  snprintf(check_cmd, sizeof(check_cmd), "which \"%s\" >/dev/null 2>&1", pathtonasm);
-  if (system(check_cmd) != 0) {
-      if (system("which nasm >/dev/null 2>&1") == 0) { pathtonasm = "nasm"; is_nasm_available = 1; }
-  } else { is_nasm_available = 1; }
+  snprintf(nasm_bin, sizeof(nasm_bin), "nasm");
+  if (linker) snprintf(linker_bin, sizeof(linker_bin), "%s", linker); 
+  else snprintf(linker_bin, sizeof(linker_bin), "ld");
 #endif
 
-  if (!is_nasm_available) { 
-      fprintf (stderr, "Rusm Error: cannot find nasm, please install nasm or add it to PATH before using rusm.\n"); 
-      return 1;
-  }
-
   int need_linking = 0;
-  if (strcmp(format, "bin") != 0) {
-      FileType out_type = check_file_type(output_file);
-      if (out_type == FILE_TYPE_EXECUTABLE) {
-          need_linking = 1;
-      }
+  if (strcmp(format, "bin") != 0) 
+  {
+    FileType out_type = check_file_type(output_file);
+    if (out_type == FILE_TYPE_EXECUTABLE || out_type == FILE_TYPE_UNKNOWN) need_linking = 1;
   }
 
-  char fulled[512];
+  char fulled[2048];
   char intermediate_obj[256];
   
   if (need_linking) {
 #if defined(RUSM_PLAT_WINDOWS)
       snprintf(intermediate_obj, sizeof(intermediate_obj), "%s.obj", tempfile);
+      snprintf(fulled, sizeof(fulled), "\"\"%s\" -f %s \"%s\" -o \"%s\"\"", nasm_bin, format, tempfile, intermediate_obj);
 #else
       snprintf(intermediate_obj, sizeof(intermediate_obj), "%s.o", tempfile);
+      snprintf(fulled, sizeof(fulled), "\"%s\" -f %s \"%s\" -o \"%s\"", nasm_bin, format, tempfile, intermediate_obj);
 #endif
-      snprintf(fulled, sizeof(fulled), "%s -f %s \"%s\" -o \"%s\"", pathtonasm, format, tempfile, intermediate_obj);
   } else {
-      snprintf(fulled, sizeof(fulled), "%s -f %s \"%s\" -o \"%s\"", pathtonasm, format, tempfile, output_file);
+#if defined(RUSM_PLAT_WINDOWS)
+      snprintf(fulled, sizeof(fulled), "\"\"%s\" -f %s \"%s\" -o \"%s\"\"", nasm_bin, format, tempfile, output_file);
+#else
+      snprintf(fulled, sizeof(fulled), "\"%s\" -f %s \"%s\" -o \"%s\"", nasm_bin, format, tempfile, output_file);
+#endif
   }
-
+  
   if (system(fulled) != 0) {
-      fprintf(stderr, "Rusm Error: NASM compilation failed\n");
+      fprintf(stderr, "Rusm \033[31mError\033[0m: compilation failed\n");
       return 1;
   }
 
   if (need_linking) {
-      char link_cmd[512];
+      char link_cmd[2048];
 #if defined(RUSM_PLAT_WINDOWS)
-      char *win_linker = find_vs_linker();
-      if (!win_linker) win_linker = "link.exe"; 
-      
-      snprintf(link_cmd, sizeof(link_cmd), "\"%s\" /subsystem:console /entry:main /out:\"%s\" \"%s\"", win_linker, output_file, intermediate_obj);
+      snprintf(link_cmd, sizeof(link_cmd), "\"\"%s\" /nodefaultlib /subsystem:%s /entry:main %s /out:\"%s\" \"%s\"\"", 
+               linker_bin, typeofapp, libs, output_file, intermediate_obj);
 #else
-      if (!linker) linker = "ld";
-      snprintf(link_cmd, sizeof(link_cmd), "%s -o \"%s\" \"%s\"", linker, output_file, intermediate_obj);
+      snprintf(link_cmd, sizeof(link_cmd), "%s %s -o \"%s\" \"%s\"", linker_bin, libs, output_file, intermediate_obj);
 #endif
 
       if (system(link_cmd) != 0) {

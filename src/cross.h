@@ -1,19 +1,10 @@
 #ifndef __rusm_cross__
 #define __rusm_cross__
 
-#if defined(_WIN32) || defined(_WIN64)
-#define RUSM_PLAT_WINDOWS
-#include <windows.h>
-char* find_vs_linker();
-#define strcasecmp _stricmp
-static const char *pathtonasm = "C:/Program Files/NASM/nasm.exe";
-static char *linker = NULL;
-#else
-  #define RUSM_PLAT_UNIX
-  #include <unistd.h>
-  static const char *pathtonasm = "/usr/bin/nasm";
-  static const char *linker = "/usr/bin/ld";
-#endif
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 typedef enum {
     FILE_TYPE_UNKNOWN,
@@ -21,10 +12,20 @@ typedef enum {
     FILE_TYPE_EXECUTABLE
 } FileType;
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#if defined(_WIN32) || defined(_WIN64)
+#define RUSM_PLAT_WINDOWS
+#include <windows.h>
+void init_paths(void);
+#define strcasecmp _stricmp
+extern char pathtonasm[MAX_PATH];
+extern char pathtolinker[MAX_PATH];
+extern char *linker;
+#else
+  #define RUSM_PLAT_UNIX
+  #include <unistd.h>
+  extern const char *pathtonasm;
+  extern const char *linker;
+#endif
 
 void get_temp_path(const char *input, char *output);
 FileType check_file_type(const char *filename);
