@@ -5,18 +5,12 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 
 add_executable(rusm src/main.c
-	src/translator.c
-	src/translator.h
-	src/cross.c
-	src/cross.h
-)
-
-target_compile_options(rusm PRIVATE
-	-Os
-	-s
-	-march=native
+    src/translator.c
+    src/translator.h
+    src/cross.c
+    src/cross.h
 )
 
 install(TARGETS rusm
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
