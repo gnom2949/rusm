@@ -21,6 +21,10 @@ extern char pathtonasm[MAX_PATH];
 extern char pathtolinker[MAX_PATH];
 extern char *linker;
 #else
+  #include <limits.h>
+  #ifndef MAX_PATH
+  #define MAX_PATH PATH_MAX
+  #endif
   #define RUSM_PLAT_UNIX
   #include <unistd.h>
   extern const char *pathtonasm;
