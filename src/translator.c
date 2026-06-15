@@ -138,48 +138,92 @@ Translate keywords[] = {
   {"внешний", "extern", 3},
   {"слово", "dw", 3},
   {"байт", "db", 3},
-  {".текст", ".text", 3},
-  {".данные", ".data", 3}
+  {"равно", "equ", 3},
+  {"*", "$", 3},
+  {"акс", "rax", 2},
+  {"акс", "eax", 1},
+  {"бкс", "rbx", 2},
+  {"бкс", "ebx", 1},
+  {"цкс", "rcx", 2},
+  {"цкс", "ecx", 1},
+  {"дкс", "rdx", 2},
+  {"дкс", "edx", 1},
+  {"кс", "cx", 3},
+  {"бс", "bx", 3},
+  {"ас", "ax", 3},
+  {"дс", "dx", 3},
+  {"ах", "ah", 3},
+  {"ал", "al", 3},
+  {"си", "rsi", 2},
+  {"си", "esi", 1},
+  {"ди", "rdi", 2},
+  {"ди", "edi", 1},
+  {"сп", "rsp", 2},
+  {"сп", "esp", 3},
+  {"бп", "rbp", 2},
+  {"бп", "ebp", 3},
+  {"данные", ".data", 3},
+  {"текст", ".text", 3}
 };
 
 void parse_line(const char *line, FILE *out, int mode) {
     char token[256];
     char trans_buf[256];
     int t_idx = 0;
-    int in_brackets = 0;
     int is_first_token = 1;
 
-    if (line[0] == '\n' || line[0] == ' ' || line[0] == '\0') {
+    int start_pos = 0;
+    while (line[start_pos] == ' ' || line[start_pos] == '\t') {
+        fprintf(out, "%c", line[start_pos]); 
+        start_pos++;
+    }
+
+    if (line[start_pos] == '\n' || line[start_pos] == '\0') {
         fprintf(out, "\n");
         return;
     }
 
-    for (int i = 0; line[i] != '\0'; i++) {
-        char c = line[i];
+    if (line[start_pos] == '%') { fprintf(out, "%s", &line[start_pos]);return;}
 
-        if (c == ';') {
+    for (int i = start_pos; line[i] != '\0'; i++) {
+        unsigned char c = line[i];
+        if ((c == 0xD0 || c == 0xD1) && line[i + 1] != '\0') {
+            token[t_idx++] = line[i];
+            token[t_idx++] = line[i + 1];
+            i++;
+            if (t_idx >= 254) t_idx = 254;
+            continue;
+        }
+
+        int is_comment = (c == ';');
+        if (!is_comment && c == '\\' && line[i + 1] == '\\') {
+            is_comment = 1;
+        }
+
+        if (is_comment) {
             if (t_idx > 0) {
                 token[t_idx] = '\0';
                 clean_token(token);
                 if (strlen(token) > 0) {
-                    fprintf(out, is_first_token ? "    %s" : " %s", translate_token(token, trans_buf, mode));
+                    fprintf(out, is_first_token ? "%s" : " %s", translate_token(token, trans_buf, mode));
                 }
             }
-            fprintf(out, " %s", &line[i]);
+            if (c == '\\') {
+                fprintf(out, " ; %s", &line[i + 2]);
+            } else {
+                fprintf(out, " %s", &line[i]);
+            }
             return;
         }
 
-        if (c == ':' && !in_brackets) {
+        if (c == ':') {
             token[t_idx] = '\0';
             clean_token(token);
             fprintf(out, "%s:\n", translate_token(token, trans_buf, mode));
             return;
         }
 
-        if (c == '[') in_brackets = 1;
-        if (c == ']') in_brackets = 0;
-
-        if ((c == ' ' || c == '\t' || c == ',') && !in_brackets) {
+        if (c == ' ' || c == '\t' || c == ',' || c == '[' || c == ']' || c == '+' || c == '-') {
             if (t_idx > 0) {
                 token[t_idx] = '\0';
                 clean_token(token);
@@ -187,7 +231,7 @@ void parse_line(const char *line, FILE *out, int mode) {
                 if (strlen(token) > 0) {
                     const char *translated = translate_token(token, trans_buf, mode);
                     if (is_first_token) {
-                        fprintf(out, "    %s", translated);
+                        fprintf(out, "%s", translated);
                         is_first_token = 0;
                     } else {
                         fprintf(out, " %s", translated);
@@ -196,11 +240,15 @@ void parse_line(const char *line, FILE *out, int mode) {
                 t_idx = 0;
             }
 
-            if (c == ',') {
-                fprintf(out, ",");
-            }
+            if (c == ',') fprintf(out, ",");
+            else if (c == '[') fprintf(out, " [");
+            else if (c == ']') fprintf(out, "]");
+            else if (c == '+') fprintf(out, " +");
+            else if (c == '-') fprintf(out, " -");
+            
             continue;
         }
+
         token[t_idx++] = c;
         if (t_idx >= 255) t_idx = 255;
     }
@@ -210,7 +258,7 @@ void parse_line(const char *line, FILE *out, int mode) {
         clean_token(token);
         if (strlen(token) > 0) {
             const char *translated = translate_token(token, trans_buf, mode);
-            fprintf(out, is_first_token ? "    %s\n" : " %s\n", translated);
+            fprintf(out, is_first_token ? "%s\n" : " %s\n", translated);
         }
     } else {
         fprintf(out, "\n");
@@ -220,7 +268,7 @@ void parse_line(const char *line, FILE *out, int mode) {
 static void transliterate(const char *src, char *dest)
 {
   const char *cyr[] = {"а","б","в","г","д","е","ё","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я","_", "А","Б","В","Г","Д","Е","Ё","Ж","З","И","Й","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"};
-  const char *lat[] = {"a","b","v","g","d","e","yo","zh","z","i","j","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","shch","","y","","e","yu","ya","_", "A","B","V","G","D","E","Jo","Zh","Z","i","J","K","L","M","N","O","P","R","S","T","U","F","H","Ts","Ch","Sh","Shch","","Y","","E","Ju","Ja"};
+  const char *lat[] = {"a","b","v","g","d","e","yo","zh","z","i","j","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","shch","","y","","e","yu","ya","_", "A","B","V","G","D","E","Jo","Zh","Z","i","J","K","L","M","N","O","P","R","S","T","U","F","H","Ts","Ch","Sh","Shch","","Y","","E","Yu","Ya"};
   int cyr_count = sizeof(cyr) / sizeof(char*);
 
   dest[0] = '\0';
