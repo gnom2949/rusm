@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-15 18:42+0500\n"
+"PO-Revision-Date: 2026-06-15 18:54+0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: src/main.c:18
+#, c-format
+msgid "[35mRusm[0m the russian assembly\n"
+msgstr "Rusm - русский ассемблер\n"
+
+#: src/main.c:19
+#, c-format
+msgid "[36mOptions[0m:\n"
+msgstr "Опции: \n"
+
+#: src/main.c:20
+#, c-format
+msgid "\t-o/--output\tSpecify output file\n"
+msgstr "\t-o/--output\tУказать выходной файл\r\n"
+
+#: src/main.c:21
+#, c-format
+msgid "\t-f/--format\tSpecify output assembly format\n"
+msgstr "\t-f/--format\tУказать выходной формат ассемблера\r\n"
+
+#: src/main.c:22
+#, c-format
+msgid "\t-v/--version\tView version of rusm\n"
+msgstr "\t-v/--version\tПосмотреть версию rusm\r\n"
+
+#: src/main.c:23
+#, c-format
+msgid "\t-sF/--supported-formats\tView rusm's supported formats\n"
+msgstr "\t-sF/--supported-formats\tПосмотреть поддерживаемые rusm форматы\r\n"
+
+#: src/main.c:24
+#, c-format
+msgid ""
+"\t-tA/--type-of-app\tSet application type(Windows specific flag, ignored in "
+"unix)\n"
+msgstr ""
+"\t-tA/--type-of-app\tУстановить тип приложения(флаг для Windows, "
+"игнорируется в Unix)\r\n"
+
+#: src/main.c:25
+#, c-format
+msgid "\t-i/--info\tLearn info about rusm\n"
+msgstr "\t-i/--info\tУзнать информацию о rusm\r\n"
+
+#: src/main.c:26
+#, c-format
+msgid "\t-I/--init\tInitialize project in current directory\n"
+msgstr "\t-I/--init\tИнициализировать проект в текущей директории\r\n"
+
+#: src/main.c:27
+#, c-format
+msgid ""
+"\t-l/--link\tLink additional libraries(separated by spaces for Win, or "
+"individual flags)\n"
+msgstr ""
+"\t-l/--link\tСвязать дополнительные библиотеки(через пробелы на Windows или "
+"отдельных флагов)\r\n"
+
+#: src/main.c:28
+#, c-format
+msgid ""
+"\t-h/--help\tShow this help\n"
+"\n"
+msgstr "\t-h/--help\tПоказать это сообщение\n"
+
+#: src/main.c:33
+#, c-format
+msgid "The [35mrusm[0m, an Russian Assembly\n"
+msgstr "Rusm, русский ассемблер\n"
+
+#: src/main.c:34
+#, c-format
+msgid "[36mPlatform: %s[0m\n"
+msgstr "Платформа: %s\n"
+
+#: src/main.c:35
+#, c-format
+msgid "Licensed under MIT License\n"
+msgstr "Лицензировано под лицензией MIT\n"
+
+#: src/main.c:36
+#, c-format
+msgid "Copyright(c)2026-present Alexander Silaev\n"
+msgstr "Copyright(с)2026-настоящее время, Александр Силаев\n"
+
+#: src/main.c:41
+#, c-format
+msgid "Rusm's supported formats:\n"
+msgstr "Форматы поддерживаемые rusm:\n"
+
+#: src/main.c:42
+#, c-format
+msgid "\t- [32mUnix[0m\tELF32\n"
+msgstr "\tЮникс\tELF32\r\n"
+
+#: src/main.c:43
+#, c-format
+msgid "\t- [32mUnix[0m\tELF64\n"
+msgstr "\tЮникс\tELF64\r\n"
+
+#: src/main.c:44
+#, c-format
+msgid "\t- [33mMicrosoft[0m\tWIN32\n"
+msgstr "\tМайкрософт\tWIN32\r\n"
+
+#: src/main.c:45
+#, c-format
+msgid "\t- [33mMicrosoft[0m\tWIN64\n"
+msgstr "\tМайкрософт\tWIN64\n"
+
+#: src/main.c:46
+#, c-format
+msgid "\t- [34mApple[0m\tMACHO64\n"
+msgstr "\tЭпл\tMACH-O64\n"
+
+#: src/main.c:47
+#, c-format
+msgid ""
+"\t- [35mBinary[0m\n"
+"\n"
+msgstr ""
+"\t- Двоичный\n"
+"\n"
+
+#: src/main.c:52
+#, c-format
+msgid "Initializing new rusm project...\n"
+msgstr "Инициализация нового проекта Rusm\n"
+
+#: src/main.c:80
+#, c-format
+msgid "\t[32mCreated[0m: src/main.rusm\n"
+msgstr "\tСоздан: src/main.rusm\n"
+
+#: src/main.c:88
+#, c-format
+msgid "\t[32mCreated[0m: README.md\n"
+msgstr "\tСоздан: src/README.md\r\n"
+
+#: src/main.c:96
+#, c-format
+msgid "\t[32mCreated[0m: LICENSE\n"
+msgstr "\tСоздан: LICENSE\r\n"
+
+#: src/main.c:119
+#, c-format
+msgid "Usage: %s <input> [Args]\n"
+msgstr "Использование: %s <входной файл> [Опции]\n"
+
+#: src/main.c:142
+#, c-format
+msgid "Rusm [31m[Error][0m: input file not specified\n"
+msgstr "Ошибка Rusm: не указан входной файл\n"
+
+#: src/main.c:163
+#, c-format
+msgid ""
+"Rusm [31mError[0m: Unsupported format '%s'. See -sF to supported formats\n"
+msgstr ""
+"Ошибка Rusm: не поддерживаемый формат '%s'. Используйте -sF для "
+"поддерживаемых форматов\n"
+
+#: src/main.c:169
+#, c-format
+msgid "Rusm [31mError[0m: cannot open input file\n"
+msgstr "Ошибка rusm: невозможно открыть входной файл\n"
+
+#: src/main.c:170
+#, c-format
+msgid "Rusm [31mError[0m: cannot create temporary file!\n"
+msgstr "Ошибка rusm: невозможно создать временный файл\n"
+
+#: src/main.c:236
+#, c-format
+msgid "Rusm [31mError[0m: compilation failed\n"
+msgstr "Ошибка rusm: компиляция завершилась неудачей.\n"
+
+#: src/main.c:250
+#, c-format
+msgid "Rusm [31mError[0m: Linking failed\n"
+msgstr "Ошибка rusm: компоновка не удалась\n"
