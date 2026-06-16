@@ -1,0 +1,1 @@
+Rusm is a trademark of Alexander Silaev, and ANYONE can USE or MODIFY rusm's compiler code. But if you fork it, YOU must REMOVE THE RUSM LOGO AND CHANGE FORK NAME.
