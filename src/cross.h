@@ -17,6 +17,11 @@ typedef enum {
 #include <windows.h>
 void init_paths(void);
 #define strcasecmp _stricmp
+#define _(String) (String)
+#define N_(String) String
+#define bindtextdomain(Domain, Directory)
+#define textdomain(Domain)
+#define bind_textdomain_codeset(Name, Codeset)
 extern char pathtonasm[MAX_PATH];
 extern char pathtolinker[MAX_PATH];
 extern char *linker;

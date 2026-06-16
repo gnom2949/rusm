@@ -1,10 +1,6 @@
 #include "translator.h"
 #include "cross.h"
-#include <libintl.h>
 #include <locale.h>
-
-#define _(String) gettext (String)
-#define N_(String) String
 
 #if defined(RUSM_PLAT_WINDOWS)
 char *platf = "windows";
@@ -141,7 +137,7 @@ int main(int argc, char **argv)
 
   if (!input_file)
   {
-    fprintf(stderr, _("Rusm \033[31m[Error]\033[0m: input file not specified\n"));
+    fprintf(stderr, _("Rusm \033[31mError\033[0m: input file not specified\n"));
     return 1;
   }
 
