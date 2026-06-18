@@ -5,9 +5,6 @@ char pathtonasm[MAX_PATH] = {0};
 char *linker = NULL;
 char pathtolinker[MAX_PATH] = {0};
 #else
-#define _(String) gettext (String)
-#define N_(String) String
-#include <libintl.h>
 const char *pathtonasm = "/usr/bin/nasm";
 const char *linker = "/usr/bin/ld";
 #endif

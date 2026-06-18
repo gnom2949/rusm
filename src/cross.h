@@ -30,6 +30,9 @@ extern char *linker;
   #ifndef MAX_PATH
   #define MAX_PATH PATH_MAX
   #endif
+  #define _(String) gettext (String)
+  #define N_(String) String
+  #include <libintl.h>
   #define RUSM_PLAT_UNIX
   #include <unistd.h>
   extern const char *pathtonasm;

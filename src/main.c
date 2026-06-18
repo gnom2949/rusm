@@ -164,7 +164,7 @@ int main(int argc, char **argv)
   FILE *in = fopen(input_file, "r");
   FILE *temp = fopen(tempfile, "w");
   if (!in)
-    { fprintf (stderr, _("Rusm \033[31mError\033[0m: cannot open input file\n")); return 1;}
+    { fprintf (stderr, _("Rusm \033[31mError\033[0m: cannot open input file: '%s'\n"), input_file); return 1;}
   if (!temp) { fprintf(stderr, _("Rusm \033[31mError\033[0m: cannot create temporary file!\n")); return 1; }
   
   #if defined(RUSM_PLAT_WINDOWS)
