@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-15 18:42+0500\n"
+"POT-Creation-Date: 2026-06-18 11:20+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,176 +17,186 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.c:18
+#: ../src/main.c:14
 #, c-format
 msgid "[35mRusm[0m the russian assembly\n"
 msgstr ""
 
-#: src/main.c:19
+#: ../src/main.c:15
 #, c-format
 msgid "[36mOptions[0m:\n"
 msgstr ""
 
-#: src/main.c:20
+#: ../src/main.c:16
 #, c-format
 msgid "\t-o/--output\tSpecify output file\n"
 msgstr ""
 
-#: src/main.c:21
+#: ../src/main.c:17
 #, c-format
 msgid "\t-f/--format\tSpecify output assembly format\n"
 msgstr ""
 
-#: src/main.c:22
+#: ../src/main.c:18
 #, c-format
 msgid "\t-v/--version\tView version of rusm\n"
 msgstr ""
 
-#: src/main.c:23
+#: ../src/main.c:19
 #, c-format
 msgid "\t-sF/--supported-formats\tView rusm's supported formats\n"
 msgstr ""
 
-#: src/main.c:24
+#: ../src/main.c:20
 #, c-format
 msgid ""
 "\t-tA/--type-of-app\tSet application type(Windows specific flag, ignored in "
 "unix)\n"
 msgstr ""
 
-#: src/main.c:25
+#: ../src/main.c:21
 #, c-format
 msgid "\t-i/--info\tLearn info about rusm\n"
 msgstr ""
 
-#: src/main.c:26
+#: ../src/main.c:22
 #, c-format
 msgid "\t-I/--init\tInitialize project in current directory\n"
 msgstr ""
 
-#: src/main.c:27
+#: ../src/main.c:23
 #, c-format
 msgid ""
 "\t-l/--link\tLink additional libraries(separated by spaces for Win, or "
 "individual flags)\n"
 msgstr ""
 
-#: src/main.c:28
+#: ../src/main.c:24
+#, c-format
+msgid "\t-h/--help\tShow this help\n"
+msgstr ""
+
+#: ../src/main.c:25
 #, c-format
 msgid ""
-"\t-h/--help\tShow this help\n"
+"\t-k/--keep\tKeep temporary file\n"
 "\n"
 msgstr ""
 
-#: src/main.c:33
+#: ../src/main.c:30
 #, c-format
 msgid "The [35mrusm[0m, an Russian Assembly\n"
 msgstr ""
 
-#: src/main.c:34
+#: ../src/main.c:31
 #, c-format
 msgid "[36mPlatform: %s[0m\n"
 msgstr ""
 
-#: src/main.c:35
+#: ../src/main.c:32
 #, c-format
 msgid "Licensed under MIT License\n"
 msgstr ""
 
-#: src/main.c:36
+#: ../src/main.c:33
 #, c-format
 msgid "Copyright(c)2026-present Alexander Silaev\n"
 msgstr ""
 
-#: src/main.c:41
+#: ../src/main.c:38
 #, c-format
 msgid "Rusm's supported formats:\n"
 msgstr ""
 
-#: src/main.c:42
+#: ../src/main.c:39
 #, c-format
 msgid "\t- [32mUnix[0m\tELF32\n"
 msgstr ""
 
-#: src/main.c:43
+#: ../src/main.c:40
 #, c-format
 msgid "\t- [32mUnix[0m\tELF64\n"
 msgstr ""
 
-#: src/main.c:44
+#: ../src/main.c:41
 #, c-format
 msgid "\t- [33mMicrosoft[0m\tWIN32\n"
 msgstr ""
 
-#: src/main.c:45
+#: ../src/main.c:42
 #, c-format
 msgid "\t- [33mMicrosoft[0m\tWIN64\n"
 msgstr ""
 
-#: src/main.c:46
+#: ../src/main.c:43
 #, c-format
 msgid "\t- [34mApple[0m\tMACHO64\n"
 msgstr ""
 
-#: src/main.c:47
+#: ../src/main.c:44
 #, c-format
 msgid ""
 "\t- [35mBinary[0m\n"
 "\n"
 msgstr ""
 
-#: src/main.c:52
+#: ../src/main.c:49
 #, c-format
 msgid "Initializing new rusm project...\n"
 msgstr ""
 
-#: src/main.c:80
+#: ../src/main.c:77
 #, c-format
 msgid "\t[32mCreated[0m: src/main.rusm\n"
 msgstr ""
 
-#: src/main.c:88
+#: ../src/main.c:85
 #, c-format
 msgid "\t[32mCreated[0m: README.md\n"
 msgstr ""
 
-#: src/main.c:96
+#: ../src/main.c:93
 #, c-format
 msgid "\t[32mCreated[0m: LICENSE\n"
 msgstr ""
 
-#: src/main.c:119
+#: ../src/main.c:116
 #, c-format
 msgid "Usage: %s <input> [Args]\n"
 msgstr ""
 
-#: src/main.c:142
+#: ../src/main.c:140
 #, c-format
-msgid "Rusm [31m[Error][0m: input file not specified\n"
+msgid "Rusm [31mError[0m: input file not specified\n"
 msgstr ""
 
-#: src/main.c:163
+#: ../src/main.c:161
 #, c-format
 msgid ""
 "Rusm [31mError[0m: Unsupported format '%s'. See -sF to supported formats\n"
 msgstr ""
 
-#: src/main.c:169
+#: ../src/main.c:167
 #, c-format
 msgid "Rusm [31mError[0m: cannot open input file\n"
 msgstr ""
 
-#: src/main.c:170
+#: ../src/main.c:168
 #, c-format
 msgid "Rusm [31mError[0m: cannot create temporary file!\n"
 msgstr ""
 
-#: src/main.c:236
+#: ../src/main.c:237
 #, c-format
 msgid "Rusm [31mError[0m: compilation failed\n"
 msgstr ""
 
-#: src/main.c:250
+#: ../src/main.c:251
 #, c-format
 msgid "Rusm [31mError[0m: Linking failed\n"
+msgstr ""
+
+#: ../src/main.c:259
+#, c-format
+msgid "[32mInfo[0m: Temporary file saved at %s"
 msgstr ""
