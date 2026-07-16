@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/rusm-1024x1024.png" style="width: 25%;" alt="rusm logo">
+  <img src="assets/rusm.svg" width="25%;" alt="rusm logo">
 </p>
 <h1 align="center">Rusm</h1>
 Rusm is a Russian assembly language, featuring full Cyrillic support, translating directly into NASM.
